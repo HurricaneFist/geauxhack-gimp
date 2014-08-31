@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+<!-- God, I'm awful at CSS -->
+
+body {
+	background-color: #29537c;
+	color: #f6f6fd;
+	font-family: 'fixedsys';
+	font-size: 22px;
+}
+
+input {
+	position: absolute;
+	left: 315px;
+	background-color: #f6f6fd;
+	color: #29537c;
+	font-family: 'fixedsys';
+	font-size: 20px;
+	height: 23px;
+	width: 225px;
+	border: none;
+}
+
+button {
+	background-color: #f6f6fd;
+	color: #29537c;
+	font-family: 'fixedsys';
+	font-size: 22px;
+	border: none;
+	margin-top: 20px;
+}
+</style>
+<script src = 'http://code.jquery.com/jquery-2.1.1.min.js'></script>
+<script>
+$(function() {
+	$.ajax({
+		url: ('http://freegeoip.net/json/'),
+		dataType: 'json',
+		success: function(result) {
+			theText = (result.city + ', ' + result.region_name + ' ' + result.zipcode);
+		}		
+	});
+});
+</script>
+<title>
+</title>
+</head>
+<body>
+<h1>Relay your IP's geolocation to your email via SendGrid</h1>
+<form>
+	<div class='box'>Email Address: <input type = "text" id = "email"> </br></div>
+	<div class='box'>SendGrid Username: <input type = "text" id = "sgusername"> </br></div>
+	<div class='box'>SendGrid Password: <input type = "password" id = "sgpass"> </br></div>
+	<button type = "button" onclick = "submitInfo()">Submit</button>
+</form>
+<div id = "confirmation"></div>
+<script>
+var submitInfo = function() {
+	var from = 'raspberrygimp@gmail.com';
+	var to = $('#email').val();
+	var username = $('#sgusername').val();
+	var api_key = $('#sgpass').val();
+
+	$.ajax({
+		type: 'POST',
+		url: 'https://api.sendgrid.com/api/mail.send.json',
+		data: 'api_user='+username+'&api_key='+api_key+'&to[]='+to+'&toname[]=Destination&subject=Your IP data&text='+theText+'&from=raspberrygimp@gmail.com',
+		dataType: 'jsonp'
+	});
+	
+	$('#confirmation').html('Your geolocation is: ' + theText + '; An email containing this information has been sent to '+to+' via SendGrid!');
+	
+};
+</script>
+</body>
+</html>

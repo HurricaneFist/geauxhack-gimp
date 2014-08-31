@@ -1,3 +1,111 @@
+<!DOCTYPE html>
 <html>
-<!-- This is the main webpage >
+	<head>
+		<title>Geaux Hack</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="stylesheet.css">
+		<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=VT323">
+		<style type="text/css">
+			@media (max-width: 1320px){
+				#map-canvas { height: 300px; width: 90%; margin-left: 5%;}
+			}
+			@media (min-width: 1321px){
+				#map-canvas { height: 400px; width: 700px; float: right; margin-top: -450px}
+			}
+    	</style>
+		<script src = "http://code.jquery.com/jquery-2.1.0.min.js">
+		</script>
+    	<script>
+		$(function() {
+	        var ip = '';
+	        $.ajax({
+                url: ('http://freegeoip.net/json/' + ip),
+                dataType: 'json',
+                success: function(result) {
+                    $('#currentCoordinates').append(
+                		'<b>Current Location:</b> '+
+                        '<i>IP</i>: ' + result.ip +
+                        ' | <i>Country</i>: ' + result.country_name +
+                        ' | <i>City, State</i>: ' + result.city + ', ' + result.region_name + ' ' + result.zipcode
+                    );
+                }
+	        });
+		});
+		</script>
+    	<script type="text/javascript"
+      		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWne3pcz4odVMy-Z7FjGd_8fqyWkjnQNY">
+    	</script>
+	    <script type="text/javascript">
+	    	var latitude = 30.4500;
+	    	var longitude = -91.1400;
+	      	function initialize() {
+	        	var mapOptions = {
+		        	center: new google.maps.LatLng(latitude, longitude),
+		        	scrollwheel: false,
+		        	zoom: 7
+	        	};
+	        var map = new google.maps.Map(document.getElementById("map-canvas"),
+	            mapOptions);
+	      	}
+	     	google.maps.event.addDomListener(window, 'load', initialize);
+	    </script>
+	    <script type="text/javascript">
+	    	function fireClicked(){
+	    		var ipregexv1 = /^\d{3}\.\d{3}\.\d{3}\.\d{3}$/;
+	    		var ipregexv2 = /^\d{3}\.\d{2}\.\d{3}\.\d{3}$/;
+	    		if($('#ipaddress').val().length === 14 || 15 && $('#ipaddress').val().match(ipregexv1) || $('#ipaddress').val().match(ipregexv2)){
+	    			console.log($('#ipaddress').val());
+	    		}else{
+	    			console.log("invalid so sorry :c");
+	    		}
+	    	}
+	    </script>
+	</head>
+	<body>
+		<h1 class="mainheader"> >\sudo G. I. M. P.</h1>
+		<div class="coordsheader">
+			<div id='currentCoordinates'><!-- Current coords will appears here --></div>
+		</div>
+		<div class="wrapper">
+			<div class="block" style="background-color:#E85A54;">
+				<form>
+					<p>Enter your IP</p> <br>
+					<input type="text" id="ipaddress" name="ipaddress" maxlength="15">
+					<button type="button" onclick="fireClicked()">Fire!</button>
+				</form>
+				<p class="disclaimer">Fear not, this information is deleted once processing is complete...</p>
+			</div>
+			<hr>
+			<div class="block">
+				<div class="circle" style="background-color:#FF8569"></div>
+				<h1 class="dataheader">Location Data</h1>
+				<p class="datacontainer">
+					-
+				</p>
+			</div>	
+			<hr>
+			<div id="map-canvas"></div>
+			<hr>
+			<div class="block">
+				<div class="circle" style="background-color:#F46169"></div>
+				<h1 class="dataheader">Other Data</h1>
+				<p class="datacontainer">
+					Our team is da bomb!
+				</p>
+			</div>
+			<hr>
+			<div class="block">
+				<div class="circle"style="background-color:#FF8551"></div>
+				<h1 class="dataheader">Other Data</h1>
+				<p class="datacontainer">
+					I believe that if life gives you lemons, you should make lemonade... And try to find somebody whose life has given them vodka, and have a party.
+				</p>
+			</div>
+		</div>
+		<div class="footerwrapper">
+			<div class="footer">
+				<p>Developed By: G I M P</p> 
+			</div>
+		</div>
+	</body>
 </html>
